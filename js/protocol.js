@@ -1,20 +1,39 @@
 const net = require('net');
-
-const server = net.createServer();
-const socket = net.Socket();
-server.listen(7070)
+window.$ = window.jQuery = require('jquery');
 
 
-function connetclient(){
-	socket.connect(7070,"192.168.1.8",() => console.log("Connected to :") );
+function createsv() {
+
+	const server = net.createServer();
+	
+	server.listen(7070);
+	console.log("Server Created!");
+
+	server.on('listening', function () {
+		console.log("Server is Listening!");
+	});
+
+	server.on('connection', function (sock) {
+		sock.on('data', function (data) {
+			updateHTML(data,2);
+			console.log("Recieved : ");
+		});
+	})
 }
 
-function sender(data){
-	socket.write(data.toString());
+function sender(data) {
+	const socket = net.Socket();
+	socket.connect(7070, '127.0.0.1', function () {
+		socket.write(data, function () {
+			console.log("Sent!");
+		});
+	});
 }
 
-
-
+$(document).ready(function () {
+	createsv();
+	console.log("ready working!");
+})
 
 
 

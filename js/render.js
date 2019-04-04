@@ -12,32 +12,32 @@ $('#msg').on('keypress', function (e) {
     if (e.which == 13) {
 
         //passing data to Sender method
-        // sender(msg);
+        sender(msg);
 
         //Updating HTML
-        updateHTML(msg,me);
-    
+        updateHTML(msg, 1);
+
         $(this).val("");
 
         //Autoscroll
-        $("#chat-messages").animate({ scrollTop: $('#chat-messages').prop("scrollHeight")}, 600);
+        $("#chat-messages").animate({
+            scrollTop: $('#chat-messages').prop("scrollHeight")
+        }, 600);
     }
 });
 
 
-function updateHTML(data,who){
+function updateHTML(data, key) {
 
-    var me = '<div class="message"></div>';
-    var them = '<div class="message right">';
-    var me_img = '<img src="../src/man.png"/>';
-    var them_img = '<img src="../src/man.png"/>';
-
-    if (who === me) {
-        $('#chat-messages').append(me + me_img +'<div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
-    } else {
-        $('#chat-messages').append(them + them_img + '<div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
+    switch (key) {
+        case 1:$('#chat-messages').append('<div class="message right"><img src="../src/me.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
+            break;
+        case 2:$('#chat-messages').append('<div class="message"><img src="../src/sender.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
+            break;
+        default:
+            break;
     }
-    
+
 }
 
 
@@ -46,9 +46,6 @@ $(document).ready(function () {
 
     $(".friend").each(function () {
         $(this).click(function () {
-
-            // connetclient();
-
 
             var childOffset = $(this).offset();
             var parentOffset = $(this).parent().parent().offset();
@@ -89,8 +86,8 @@ $(document).ready(function () {
             $(".message").not(".right").find("img").attr("src", $(clone).attr("src"));
             $('#friendslist').fadeOut();
             $('#chatview').fadeIn();
-            
-            
+
+
             // Chat open scroll to bottom
             $('#chat-messages').scrollTop($('#chat-messages').prop("scrollHeight"));
 

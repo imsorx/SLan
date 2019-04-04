@@ -20,6 +20,6 @@ app.on('ready',function(){
         slashes:true
     }));
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     
 });
