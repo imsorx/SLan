@@ -1,13 +1,15 @@
 const remote = require('electron').remote;
+const BrowserWindow = require('electron').remote.BrowserWindow;
+const path = require('path');
 window.$ = window.jQuery = require('jquery');
 
 $('#cls-btn').on('click', e => {
-    remote.getCurrentWindow().close()
+    remote.getCurrentWindow().close();
 })
 
+
 $('#msg').on('keypress', function (e) {
-    var msg = $(this).val()
-    var me;
+    var msg = $(this).val();
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (e.which == 13) {
 
@@ -23,16 +25,18 @@ $('#msg').on('keypress', function (e) {
         $("#chat-messages").animate({
             scrollTop: $('#chat-messages').prop("scrollHeight")
         }, 600);
-    }
+    };
 });
 
 
 function updateHTML(data, key) {
 
     switch (key) {
-        case 1:$('#chat-messages').append('<div class="message right"><img src="../src/me.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
-            break;
-        case 2:$('#chat-messages').append('<div class="message"><img src="../src/sender.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
+        case 1:
+            $('#chat-messages').append('<div class="message right"><img src="../src/me.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
+            break
+        case 2:
+            $('#chat-messages').append('<div class="message"><img src="../src/sender.png"/><div class="bubble">' + data + '<div class="corner"></div><span>Now</span></div></div>');
             break;
         default:
             break;
@@ -40,13 +44,14 @@ function updateHTML(data, key) {
 
 }
 
-
+function append_users(name, addr) {
+    $("#friends #search").before('<div class="friend"><img src="./me.png" /><p><strong>' + name + '</strong><br><span>' + addr + '</span></p><div class="status"></div></div>');
+}
 
 $(document).ready(function () {
 
     $(".friend").each(function () {
         $(this).click(function () {
-
             var childOffset = $(this).offset();
             var parentOffset = $(this).parent().parent().offset();
             var childTop = childOffset.top - parentOffset.top;
@@ -112,3 +117,19 @@ $(document).ready(function () {
         });
     });
 });
+
+$('#abt-btn').on('click', function () {
+    let child = new BrowserWindow({
+        parent: remote.getCurrentWindow(),
+        width: 290,
+        height: 510,
+        frame: false,
+        modal: true,
+        show: false
+    });
+
+    let loadpath = path.join('file://', __dirname, '../src/about.html');
+    child.loadURL(loadpath)
+
+    child.once('ready-to-show', () => child.show())
+})

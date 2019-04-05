@@ -64,7 +64,6 @@ body {
 #chatbox {
 	width: 100%;
 	background: #fff;
-
 	height: 100%;
 	position: absolute;
 
@@ -102,7 +101,6 @@ body {
 	border-bottom: 4px solid #5C9BEC;
 	cursor: default;
 }
-
 
 .friend {
 	height: 70px;
